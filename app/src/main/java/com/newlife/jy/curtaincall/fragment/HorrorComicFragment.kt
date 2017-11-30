@@ -2,7 +2,7 @@ package com.newlife.jy.curtaincall.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +43,7 @@ class HorrorComicFragment : Fragment() {
     private fun initView() {
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
         mRecyclerView.setHasFixedSize(true)
-        mRecyclerView.layoutManager = LinearLayoutManager(context)
+        mRecyclerView.layoutManager = GridLayoutManager(context, 1)
     }
 
     private fun initEvent() {
@@ -53,7 +53,7 @@ class HorrorComicFragment : Fragment() {
         }
 
         mRecyclerView.setOnTouchListener { v, event ->
-            if (!mLoading && !mRecyclerView.canScrollVertically(1)){
+            if (!mLoading && !mRecyclerView.canScrollVertically(1)) {
                 mPage++
                 loadData()
             }
@@ -67,20 +67,28 @@ class HorrorComicFragment : Fragment() {
             val data = HttpRequest.getKBMHData(mPage)
             uiThread {
                 mLoading = false
-                if (data == null){
+                if (data == null) {
                     showSnackbar(view as ViewGroup, "加载失败")
                     return@uiThread
                 }
-                if (mRecyclerView.adapter == null){
+                if (mRecyclerView.adapter == null) {
                     mData.addAll(data)
                     initAdapter()
+                } else if (mPage > 1) {
+                    val pos = mData.size
+                    mData.addAll(data)
+                    mRecyclerView.adapter.notifyItemRangeInserted(pos, data.size)
+                } else {
+                    mData.clear()
+                    mData.addAll(data)
+                    mRecyclerView.adapter.notifyDataSetChanged()
                 }
             }
         }
     }
 
     private fun initAdapter() {
-        val adapter = HorrorComicAdapter(R.layout.item_horror_comic,mData)
+        mRecyclerView.adapter = HorrorComicAdapter(context, R.layout.item_horror_comic, mData)
     }
 
 }

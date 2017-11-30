@@ -5,19 +5,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:layout_height="150dp"
+    android:layout_margin="@dimen/dp_10">
 
     <ImageView
-        android:id="@+id/mTvHorrorComicTitle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@mipmap/ic_launcher"/>
-
-    <TextView
         android:id="@+id/mIvHorrorComicThumb"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"/>
+
+    <View
+        android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_gravity="bottom|center_vertical"
+        android:background="@color/colorPrimary"
+        android:alpha="0.5"
+        android:layout_gravity="bottom"/>
+    <TextView
+        android:id="@+id/mTvHorrorComicTitle"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="bottom"
         android:padding="@dimen/dp_4"
         android:textColor="@android:color/white"
         android:textSize="@dimen/sp_16"

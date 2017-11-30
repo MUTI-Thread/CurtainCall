@@ -30,7 +30,26 @@ class HorrorComicBean {
                 var title: String? = null
                 var link: String? = null
                 var thumbnailList: List<String>? = null
+
+                override fun toString(): String {
+                    return "ContentlistBean(id=$id, time=$time, title=$title, link=$link, thumbnailList=$thumbnailList)"
+                }
+            }
+
+            override fun toString(): String {
+                return "PagebeanBean(isHasMorePage=$isHasMorePage, currentPage=$currentPage, maxResult=$maxResult, contentlist=$contentlist)"
             }
         }
+
+        override fun toString(): String {
+            return "ShowapiResBodyBean(ret_code=$ret_code, pagebean=$pagebean)"
+        }
+
     }
+
+    override fun toString(): String {
+        return "HorrorComicBean(showapi_res_code=$showapi_res_code, showapi_res_error=$showapi_res_error, showapi_res_body=$showapi_res_body)"
+    }
+
+
 }
