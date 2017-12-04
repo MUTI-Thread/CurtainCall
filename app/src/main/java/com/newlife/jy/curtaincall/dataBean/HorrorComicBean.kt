@@ -2,54 +2,31 @@ package com.newlife.jy.curtaincall.dataBean
 
 /**
  * @author JY
- * 2017/11/30 1:53
+ * 2017/12/3 18:59
  */
 
-class HorrorComicBean {
+data class HorrorComicBean(
+		val showapi_res_code: Int, //0
+		val showapi_res_error: String,
+		val showapi_res_body: ShowapiResBody
+)
 
-    var showapi_res_code: Int = 0
-    var showapi_res_error: String? = null
-    var showapi_res_body: ShowapiResBodyBean? = null
+data class ShowapiResBody(
+		val ret_code: Int, //0
+		val pagebean: Pagebean
+)
 
-    class ShowapiResBodyBean {
+data class Pagebean(
+		val hasMorePage: Boolean, //true
+		val contentlist: List<Contentlist>,
+		val currentPage: Int, //1
+		val maxResult: String //50
+)
 
-        var ret_code: Int = 0
-        var pagebean: PagebeanBean? = null
-
-        class PagebeanBean {
-
-            var isHasMorePage: Boolean = false
-            var currentPage: Int = 0
-            var maxResult: String? = null
-            var contentlist: List<ContentlistBean>? = null
-
-            class ContentlistBean {
-
-                var id: String? = null
-                var time: String? = null
-                var title: String? = null
-                var link: String? = null
-                var thumbnailList: List<String>? = null
-
-                override fun toString(): String {
-                    return "ContentlistBean(id=$id, time=$time, title=$title, link=$link, thumbnailList=$thumbnailList)"
-                }
-            }
-
-            override fun toString(): String {
-                return "PagebeanBean(isHasMorePage=$isHasMorePage, currentPage=$currentPage, maxResult=$maxResult, contentlist=$contentlist)"
-            }
-        }
-
-        override fun toString(): String {
-            return "ShowapiResBodyBean(ret_code=$ret_code, pagebean=$pagebean)"
-        }
-
-    }
-
-    override fun toString(): String {
-        return "HorrorComicBean(showapi_res_code=$showapi_res_code, showapi_res_error=$showapi_res_error, showapi_res_body=$showapi_res_body)"
-    }
-
-
-}
+data class Contentlist(
+		val id: String, ///weimanhua/kbmh/136275.html
+		val thumbnailList: List<String>,
+		val time: String, //8:57
+		val title: String, //恐怖漫画 | 鱼缸-黑白漫话
+		val link: String //http://heibaimanhua.com/weimanhua/kbmh/136275.html
+)

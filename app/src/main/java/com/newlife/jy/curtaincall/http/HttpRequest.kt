@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.newlife.jy.curtaincall.constant.ComicApi.AUTH
 import com.newlife.jy.curtaincall.constant.ComicApi.COMIC_CATEGORY
 import com.newlife.jy.curtaincall.constant.ComicApi.KBMH
+import com.newlife.jy.curtaincall.dataBean.Contentlist
 import com.newlife.jy.curtaincall.dataBean.HorrorComicBean
 import java.net.URL
 
@@ -26,7 +27,7 @@ class HttpRequest {
             return "$url$AUTH"
         }
 
-        fun getKBMHData(page: Int, maxResult: Int = 10): List<HorrorComicBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean>? {
+        fun getKBMHData(page: Int, maxResult: Int = 10): List<Contentlist>? {
             val forcastJsonStr: String?
             try {
                 forcastJsonStr = URL(buildBaseUrl(COMIC_CATEGORY, KBMH, page, maxResult)).readText()
@@ -35,7 +36,7 @@ class HttpRequest {
             }
             val data = Gson().fromJson(forcastJsonStr, HorrorComicBean::class.java)
             Log.e("HttpRequest:", data.toString())
-            val horrorComics: List<HorrorComicBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean> = data.showapi_res_body?.pagebean?.contentlist!!
+            val horrorComics: List<Contentlist> = data.showapi_res_body.pagebean.contentlist
             return if (horrorComics.isNotEmpty()) horrorComics else null
         }
     }

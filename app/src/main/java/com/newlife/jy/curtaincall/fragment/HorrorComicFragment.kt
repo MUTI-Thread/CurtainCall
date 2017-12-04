@@ -1,15 +1,19 @@
 package com.newlife.jy.curtaincall.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.newlife.jy.curtaincall.R
+import com.newlife.jy.curtaincall.activity.ComicDetailActivity
 import com.newlife.jy.curtaincall.activity.showSnackbar
 import com.newlife.jy.curtaincall.adapter.HorrorComicAdapter
-import com.newlife.jy.curtaincall.dataBean.HorrorComicBean
+import com.newlife.jy.curtaincall.dataBean.Contentlist
 import com.newlife.jy.curtaincall.http.HttpRequest
 import kotlinx.android.synthetic.main.fragment_horror_comic.*
 import org.jetbrains.anko.doAsync
@@ -22,7 +26,8 @@ import kotlin.properties.Delegates
  */
 class HorrorComicFragment : Fragment() {
 
-    private var mData: MutableList<HorrorComicBean.ShowapiResBodyBean.PagebeanBean.ContentlistBean> = ArrayList()
+    private var mData: MutableList<Contentlist> = ArrayList()
+    private var mAdapter: HorrorComicAdapter? = null
     private var mPage: Int = 1
     private var mLoading by Delegates.observable(true) { _, _, new ->
         mSwipeRefreshLayout.isRefreshing = new
@@ -59,6 +64,16 @@ class HorrorComicFragment : Fragment() {
             }
             false
         }
+
+
+        mAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
+            view.setOnClickListener {
+                val intent = Intent()
+                intent.setClass(activity, ComicDetailActivity::class.java)
+                intent.putExtra(ComicDetailActivity.COMIC_ID, (adapter.data as List<Contentlist>)[position].id)
+                Log.d("tag",(adapter.data as List<Contentlist>)[position].id)
+                startActivity(intent) }
+        }
     }
 
     private fun loadData() {
@@ -88,7 +103,8 @@ class HorrorComicFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        mRecyclerView.adapter = HorrorComicAdapter(context, R.layout.item_horror_comic, mData)
+        mAdapter = HorrorComicAdapter(context, mData)
+        mRecyclerView.adapter = mAdapter
     }
 
 }
