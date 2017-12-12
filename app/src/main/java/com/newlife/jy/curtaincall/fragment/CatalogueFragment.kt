@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.newlife.jy.curtaincall.R
-import com.newlife.jy.curtaincall.adapter.TextPageAdapter
+import com.newlife.jy.curtaincall.adapter.BaseTabAdapter
 import kotlinx.android.synthetic.main.fragment_catalogue.*
 
 /**
@@ -26,7 +26,7 @@ class CatalogueFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val fragments: ArrayList<Fragment> = arrayListOf(HorrorComicFragment(), StoryComicFragment())
         mViewPager.offscreenPageLimit = tabs.size
-        mViewPager.adapter = TextPageAdapter(childFragmentManager, fragments, tabs)
+        mViewPager.adapter = BaseTabAdapter(childFragmentManager, fragments, tabs)
         mTabLayout.tabMode = TabLayout.MODE_FIXED
         mTabLayout.tabGravity = TabLayout.GRAVITY_FILL
         mTabLayout.setupWithViewPager(mViewPager)

@@ -15,7 +15,7 @@
  *******************************************************************************/
 package com.newlife.jy.curtaincall.http
 
-import com.newlife.jy.curtaincall.dataBean.Contentlist
+import com.newlife.jy.curtaincall.dataBean.HorrorComicBean
 import com.newlife.jy.curtaincall.dataBean.Repo
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -34,5 +34,5 @@ interface RequestService {
     //?page={page}&maxResult={maxResult}&showapi_appid=$APPID&showapi_sign=$SECRET
 
     @GET("958-1")
-    fun getKBMHRepos(@QueryMap page: Map<String, String>): Observable<List<Contentlist>>
+    fun getKBMHRepos(@QueryMap page: Map<String, String>): Observable<HorrorComicBean.HorrorComic>
 }

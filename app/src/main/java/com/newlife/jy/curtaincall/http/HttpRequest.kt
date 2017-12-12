@@ -4,8 +4,9 @@ import android.util.Log
 import com.google.gson.Gson
 import com.newlife.jy.curtaincall.constant.ComicApi.AUTH
 import com.newlife.jy.curtaincall.constant.ComicApi.COMIC_CATEGORY
+import com.newlife.jy.curtaincall.constant.ComicApi.COMIC_DETAIL
 import com.newlife.jy.curtaincall.constant.ComicApi.KBMH
-import com.newlife.jy.curtaincall.dataBean.Contentlist
+import com.newlife.jy.curtaincall.dataBean.ComicDetailBean
 import com.newlife.jy.curtaincall.dataBean.HorrorComicBean
 import java.net.URL
 
@@ -17,8 +18,14 @@ import java.net.URL
 class HttpRequest {
 
     companion object {
-        fun buildBaseUrl(baseUrl: String, type: String, page: Int, maxResult: Int): String {
-            val url = buildUrl("$baseUrl?type=$type&page=$page&maxResult=$maxResult")
+        fun buildComicsUrl(baseUrl: String, type: String, page: Int): String {
+            val url = buildUrl("$baseUrl?type=$type&page=$page")
+            Log.e("HttpRequest:", url)
+            return url
+        }
+
+        fun buildComicDetaiUrl(baseUrl: String, comicId: String): String {
+            val url = buildUrl("$baseUrl?id=$comicId")
             Log.e("HttpRequest:", url)
             return url
         }
@@ -27,17 +34,28 @@ class HttpRequest {
             return "$url$AUTH"
         }
 
-        fun getKBMHData(page: Int, maxResult: Int = 10): List<Contentlist>? {
+        fun getHorrorComic(page: Int): List<HorrorComicBean.Contentlist>? {
             val forcastJsonStr: String?
             try {
-                forcastJsonStr = URL(buildBaseUrl(COMIC_CATEGORY, KBMH, page, maxResult)).readText()
+                forcastJsonStr = URL(buildComicsUrl(COMIC_CATEGORY, KBMH, page)).readText()
             } catch (e: Exception) {
                 return null
             }
-            val data = Gson().fromJson(forcastJsonStr, HorrorComicBean::class.java)
-            Log.e("HttpRequest:", data.toString())
-            val horrorComics: List<Contentlist> = data.showapi_res_body.pagebean.contentlist
-            return if (horrorComics.isNotEmpty()) horrorComics else null
+            val data = Gson().fromJson(forcastJsonStr, HorrorComicBean.HorrorComic::class.java)
+            val contentlist = data.showapi_res_body.pagebean.contentlist
+            return if (contentlist.isNotEmpty()) contentlist else null
+        }
+
+        fun getHorrorComicDetail(comicId: String): List<String>? {
+            val forcastJsonStr: String?
+            try {
+                forcastJsonStr = URL(buildComicDetaiUrl(COMIC_DETAIL, comicId)).readText()
+            } catch (e: Exception) {
+                return null
+            }
+            val data = Gson().fromJson(forcastJsonStr, ComicDetailBean.ComicDetail::class.java)
+            val imgList = data.showapi_res_body.item.imgList
+            return if (imgList.isNotEmpty()) imgList else null
         }
     }
 

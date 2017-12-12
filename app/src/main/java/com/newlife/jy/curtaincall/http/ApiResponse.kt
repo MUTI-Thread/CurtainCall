@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.zyr.apiclient.network
+package com.newlife.jy.curtaincall.http
 
 import LoadingDialog
 import android.content.Context

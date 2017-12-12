@@ -2,7 +2,12 @@ package com.newlife.jy.curtaincall.activity
 
 import android.os.Bundle
 import com.newlife.jy.curtaincall.R
+import com.newlife.jy.curtaincall.adapter.BasePagerAdapter
+import com.newlife.jy.curtaincall.http.HttpRequest
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
+import kotlinx.android.synthetic.main.fragment_catalogue.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 /**
  * @author JY
@@ -11,6 +16,7 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 class ComicDetailActivity : RxAppCompatActivity() {
 
     var comicId: String = ""
+    private var mData: MutableList<String> = ArrayList()
 
     companion object {
         val COMIC_ID: String = "comic_id"
@@ -29,7 +35,12 @@ class ComicDetailActivity : RxAppCompatActivity() {
 
     private fun loadData() {
         comicId = intent.getStringExtra(COMIC_ID)
-        println(comicId)
+        doAsync {
+            val mData = HttpRequest.getHorrorComicDetail(comicId)
+            uiThread {
+                mViewPager.adapter = mData?.let { it1 -> BasePagerAdapter(this@ComicDetailActivity, it1) }
+            }
+        }
     }
 
 }

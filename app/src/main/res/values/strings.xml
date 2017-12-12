@@ -7,4 +7,24 @@
     <string name="timeout">请求超时</string>
     <string name="unexpected_error">未知错误</string>
     <string name="network_wrong">网络有问题</string>
+
+    <string name="system_error">系统调用错误</string>
+    <string name="no_balance">可调用次数或金额为0</string>
+    <string name="read_timeout">读取超时</string>
+    <string name="data_parse_error">服务端返回数据解析错误</string>
+    <string name="dns_parse_error">后端服务器DNS解析错误</string>
+    <string name="no_service">服务不存在或未上线</string>
+    <string name="system_under_maintenance">服务不存在或未上线</string>
+    <string name="need_appid">showapi_appid字段必传</string>
+    <string name="need_sign">showapi_sign字段必传</string>
+    <string name="sign_error">签名sign验证有误</string>
+    <string name="timestamp_out_of_date">showapi_timestamp无效</string>
+    <string name="no_permission">app无权限调用接口</string>
+    <string name="no_order">没有订购套餐</string>
+    <string name="permission_closed">服务商关闭对您的调用权限</string>
+    <string name="rate_limited">调用频率受限</string>
+    <string name="app_not_find">找不到您的应用</string>
+    <string name="child_permission_invalid">子授权app_child_id无效</string>
+    <string name="child_permission_out_of_date">子授权已过期或失效</string>
+    <string name="child_permission_limited">子授权ip受限</string>
 </resources>
