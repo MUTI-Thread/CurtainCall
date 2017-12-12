@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
  * @author JY
  * 2017/11/29 2:38
  */
-public class TextPageAdapter(fm: FragmentManager,
+class TextPageAdapter(fm: FragmentManager,
                               val fragments: ArrayList<Fragment>,
                               val titles: Array<String>) : FragmentStatePagerAdapter(fm) {
 

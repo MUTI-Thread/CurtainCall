@@ -1,14 +1,14 @@
 package com.newlife.jy.curtaincall.activity
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import com.newlife.jy.curtaincall.R
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 
 /**
  * @author JY
  * 2017/12/4 2:08
  */
-class ComicDetailActivity : AppCompatActivity() {
+class ComicDetailActivity : RxAppCompatActivity() {
 
     var comicId: String = ""
 

@@ -3,11 +3,11 @@ package com.newlife.jy.curtaincall.activity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
 import com.newlife.jy.curtaincall.R
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 fun showSnackbar(viewGroup: ViewGroup, text: String, duration: Int = 1000) {
@@ -16,7 +16,7 @@ fun showSnackbar(viewGroup: ViewGroup, text: String, duration: Int = 1000) {
     snack.show()
 }
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : RxAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
