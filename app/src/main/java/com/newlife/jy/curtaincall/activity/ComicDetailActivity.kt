@@ -1,11 +1,12 @@
 package com.newlife.jy.curtaincall.activity
 
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import com.newlife.jy.curtaincall.R
-import com.newlife.jy.curtaincall.adapter.BasePagerAdapter
+import com.newlife.jy.curtaincall.adapter.ComicDetailAdapter
 import com.newlife.jy.curtaincall.http.HttpRequest
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
-import kotlinx.android.synthetic.main.fragment_catalogue.*
+import kotlinx.android.synthetic.main.activity_comic_detail.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
@@ -25,8 +26,13 @@ class ComicDetailActivity : RxAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comic_detail)
+        initView();
         initEvent()
         loadData()
+    }
+
+    private fun initView() {
+        mRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     private fun initEvent() {
@@ -38,7 +44,9 @@ class ComicDetailActivity : RxAppCompatActivity() {
         doAsync {
             val mData = HttpRequest.getHorrorComicDetail(comicId)
             uiThread {
-                mViewPager.adapter = mData?.let { it1 -> BasePagerAdapter(this@ComicDetailActivity, it1) }
+                //                mViewPager.adapter = mData?.let { it1 -> BasePagerAdapter(this@ComicDetailActivity, it1) }
+                mRecyclerView.adapter = mData?.let { it1 -> ComicDetailAdapter(this@ComicDetailActivity, it1) }
+                mRecyclerView.adapter.notifyDataSetChanged()
             }
         }
     }
