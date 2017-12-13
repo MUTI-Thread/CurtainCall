@@ -17,7 +17,6 @@ import com.newlife.jy.curtaincall.R
  */
 class BasePagerAdapter(val context: Context, val imgs: List<String>) : PagerAdapter() {
 
-    var mViews: MutableList<ImageView> = ArrayList()
 
     override fun isViewFromObject(view: View?, `object`: Any?): Boolean {
         return view == `object`
@@ -28,13 +27,12 @@ class BasePagerAdapter(val context: Context, val imgs: List<String>) : PagerAdap
     }
 
     override fun destroyItem(container: ViewGroup?, position: Int, `object`: Any?) {
-        container?.removeView(mViews[position])
+        container?.removeView(`object` as View?)
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = LayoutInflater.from(context).inflate(R.layout.item_comic_page, LinearLayout(context), false)
         val imageView: ImageView = view.findViewById(R.id.image)
-        mViews.add(imageView)
         Glide.with(context)
                 .load(imgs[position])
                 .into(imageView)
