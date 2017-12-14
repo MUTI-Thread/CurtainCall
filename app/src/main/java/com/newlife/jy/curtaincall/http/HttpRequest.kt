@@ -3,11 +3,9 @@ package com.newlife.jy.curtaincall.http
 import android.util.Log
 import com.google.gson.Gson
 import com.newlife.jy.curtaincall.constant.ComicApi.AUTH
-import com.newlife.jy.curtaincall.constant.ComicApi.COMIC_CATEGORY
-import com.newlife.jy.curtaincall.constant.ComicApi.COMIC_DETAIL
-import com.newlife.jy.curtaincall.constant.ComicApi.KBMH
 import com.newlife.jy.curtaincall.dataBean.ComicDetailBean
 import com.newlife.jy.curtaincall.dataBean.HorrorComicBean
+import java.lang.reflect.Type
 import java.net.URL
 
 /**
@@ -18,26 +16,32 @@ import java.net.URL
 class HttpRequest {
 
     companion object {
-        fun buildComicsUrl(baseUrl: String, type: String, page: Int): String {
-            val url = buildUrl("$baseUrl?type=$type&page=$page")
-            Log.e("HttpRequest:", url)
+
+        fun buildUrl(baseUrl: String, map: Map<String, String>): String {
+            var query = ""
+            for ((k, v) in map) {
+                query += "$k=$v&"
+            }
+            val url = baseUrl + "?" + query + AUTH
+            Log.e("RequestUrl:", url)
             return url
         }
 
-        fun buildComicDetaiUrl(baseUrl: String, comicId: String): String {
-            val url = buildUrl("$baseUrl?id=$comicId")
-            Log.e("HttpRequest:", url)
-            return url
+        fun <T : Type> getHttpResult(url: String, map: Map<String, String>, clazz: T): T {
+            var forcastJsonStr: String? = ""
+            try {
+                forcastJsonStr = URL(buildUrl(url, map)).readText()
+            } catch (e: Exception) {
+                Log.e("Error:", e.message)
+            }
+            val data = Gson().fromJson(forcastJsonStr, clazz.javaClass)
+            return data as T
         }
 
-        fun buildUrl(url: String): String {
-            return "$url$AUTH"
-        }
-
-        fun getHorrorComic(page: Int): List<HorrorComicBean.Contentlist>? {
+        fun getHorrorComic(baseUrl: String, map: Map<String, String>): List<HorrorComicBean.Contentlist>? {
             val forcastJsonStr: String?
             try {
-                forcastJsonStr = URL(buildComicsUrl(COMIC_CATEGORY, KBMH, page)).readText()
+                forcastJsonStr = URL(buildUrl(baseUrl, map)).readText()
             } catch (e: Exception) {
                 return null
             }
@@ -46,10 +50,10 @@ class HttpRequest {
             return if (contentlist.isNotEmpty()) contentlist else null
         }
 
-        fun getHorrorComicDetail(comicId: String): List<String>? {
+        fun getHorrorComicDetail(baseUrl: String, map: Map<String, String>): List<String>? {
             val forcastJsonStr: String?
             try {
-                forcastJsonStr = URL(buildComicDetaiUrl(COMIC_DETAIL, comicId)).readText()
+                forcastJsonStr = URL(buildUrl(baseUrl, map)).readText()
             } catch (e: Exception) {
                 return null
             }

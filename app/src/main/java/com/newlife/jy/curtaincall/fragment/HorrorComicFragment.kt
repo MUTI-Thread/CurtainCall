@@ -13,6 +13,7 @@ import com.newlife.jy.curtaincall.R
 import com.newlife.jy.curtaincall.activity.ComicDetailActivity
 import com.newlife.jy.curtaincall.activity.showSnackbar
 import com.newlife.jy.curtaincall.adapter.HorrorComicAdapter
+import com.newlife.jy.curtaincall.constant.ComicApi
 import com.newlife.jy.curtaincall.dataBean.HorrorComicBean
 import com.newlife.jy.curtaincall.http.HttpRequest
 import kotlinx.android.synthetic.main.fragment_horror_comic.*
@@ -81,7 +82,8 @@ class HorrorComicFragment : Fragment() {
     private fun loadData() {
         mLoading = true
         doAsync {
-            val data = HttpRequest.getHorrorComic(mPage)
+            val param = mapOf("type" to ComicApi.KBMH, "page" to mPage.toString())
+            val data = HttpRequest.getHorrorComic(ComicApi.COMIC_CATEGORY, param)
             uiThread {
                 mLoading = false
                 if (data == null) {

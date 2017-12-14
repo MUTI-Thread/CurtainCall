@@ -8,7 +8,7 @@ package com.newlife.jy.curtaincall.constant
 object ComicApi {
     const val APPID = "50308"
     const val SECRET = "418ce308ee0e4c37a593686c936799d2"
-    const val AUTH = "&showapi_appid=$APPID&showapi_sign=$SECRET"
+    const val AUTH = "showapi_appid=$APPID&showapi_sign=$SECRET"
 
     const val COMIC_DIOMAIN = "http://route.showapi.com/"
     const val COMIC_CATEGORY = COMIC_DIOMAIN + "958-1"
