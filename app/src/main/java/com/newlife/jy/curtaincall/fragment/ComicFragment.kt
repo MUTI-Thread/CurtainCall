@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.newlife.jy.curtaincall.R
 import com.newlife.jy.curtaincall.activity.ComicDetailActivity
-import com.newlife.jy.curtaincall.activity.showSnackbar
 import com.newlife.jy.curtaincall.adapter.HorrorComicAdapter
 import com.newlife.jy.curtaincall.constant.ComicApi
 import com.newlife.jy.curtaincall.dataBean.HorrorComicBean
@@ -26,9 +25,13 @@ import kotlin.properties.Delegates
  * @author JY
  * 2017/11/29 2:50
  */
-class HorrorComicFragment : Fragment() {
+class ComicFragment() : Fragment() {
 
+    companion object {
+        const val COMIC_TYPE: String = "TYPE"
+    }
 
+    private var mIndex: Int = 0
     private var mData: MutableList<HorrorComicBean.Contentlist> = ArrayList()
     private var mAdapter: HorrorComicAdapter? = null
     private var mPage: Int = 1
@@ -39,6 +42,13 @@ class HorrorComicFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_horror_comic, container, false)
+    }
+
+    override fun setArguments(args: Bundle?) {
+        super.setArguments(args)
+        if (args != null) {
+            mIndex = args.getInt(COMIC_TYPE)
+        }
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -68,28 +78,19 @@ class HorrorComicFragment : Fragment() {
             }
             false
         }
-        mAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-            view.setOnClickListener {
-                val intent = Intent()
-                intent.setClass(activity, ComicDetailActivity::class.java)
-                intent.putExtra(ComicDetailActivity.COMIC_ID, mData[position].id)
-                Log.d("tag", mData[position].id)
-                startActivity(intent)
-            }
-        }
     }
 
     private fun loadData() {
         mLoading = true
         doAsync {
-            val param = mapOf("type" to ComicApi.KBMH, "page" to mPage.toString())
-            val data = HttpRequest.getHorrorComic(ComicApi.COMIC_CATEGORY, param)
+            val param = mapOf("type" to ComicApi.LIST_COMIC_TYPE[mIndex], "page" to mPage.toString())
+            val comic = HttpRequest
+                    .url(ComicApi.COMIC_CATEGORY)//ComicApi.LIST_COMIC_TYPE[comicType]
+                    .params(param)
+                    .convert(HorrorComicBean.HorrorComic::class.java)
+            val data = comic.showapi_res_body.pagebean.contentlist
             uiThread {
                 mLoading = false
-                if (data == null) {
-                    showSnackbar(view as ViewGroup, "加载失败")
-                    return@uiThread
-                }
                 if (mRecyclerView.adapter == null) {
                     mData.addAll(data)
                     mRecyclerView.adapter.notifyDataSetChanged()
@@ -109,6 +110,13 @@ class HorrorComicFragment : Fragment() {
     private fun initAdapter() {
         mAdapter = HorrorComicAdapter(context, mData)
         mRecyclerView.adapter = mAdapter
+        mAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { _, _, position ->
+            val intent = Intent()
+            intent.setClass(activity, ComicDetailActivity::class.java)
+            intent.putExtra(ComicDetailActivity.COMIC_ID, mData[position].id)
+            Log.d("tag", mData[position].id)
+            startActivity(intent)
+        }
     }
 
 }

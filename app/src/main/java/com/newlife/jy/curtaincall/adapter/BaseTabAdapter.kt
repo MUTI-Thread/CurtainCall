@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
  * 2017/11/29 2:38
  */
 class BaseTabAdapter(fm: FragmentManager,
-                              val fragments: ArrayList<Fragment>,
+                              val fragments: List<Fragment>,
                               val titles: Array<String>) : FragmentStatePagerAdapter(fm) {
 
 
@@ -22,6 +22,6 @@ class BaseTabAdapter(fm: FragmentManager,
     }
 
     override fun getCount(): Int {
-        return titles.size
+        return fragments.size
     }
 }

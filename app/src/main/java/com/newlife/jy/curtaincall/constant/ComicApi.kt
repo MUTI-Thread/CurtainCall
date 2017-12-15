@@ -14,6 +14,7 @@ object ComicApi {
     const val COMIC_CATEGORY = COMIC_DIOMAIN + "958-1"
     const val COMIC_DETAIL = COMIC_DIOMAIN + "958-2"
 
+
     const val KBMH = "/category/weimanhua/kbmh"                 //恐怖漫画
     const val GUSHIMANHUA = "/category/weimanhua/gushimanhua"   //故事漫画
     const val DUANZISHOU = "/category/duanzishou"               //段子手
@@ -27,4 +28,7 @@ object ComicApi {
     const val SHEYING = "/category/sheying"                     //摄影
     const val WANYI = "/category/wanyi"                         //玩艺
     const val CHAHUA = "/category/chahua"                       //插画
+
+    val LIST_COMIC_TYPE = listOf<String>(KBMH, GUSHIMANHUA)
 }
+

@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.newlife.jy.curtaincall.R
 import com.newlife.jy.curtaincall.adapter.BasePagerAdapter
-import com.newlife.jy.curtaincall.constant.ComicApi.COMIC_DETAIL
+import com.newlife.jy.curtaincall.constant.ComicApi
+import com.newlife.jy.curtaincall.dataBean.ComicDetailBean
 import com.newlife.jy.curtaincall.http.HttpRequest
 import kotlinx.android.synthetic.main.activity_comic_detail.*
 import org.jetbrains.anko.doAsync
@@ -33,7 +34,11 @@ class ComicDetailActivity : AppCompatActivity() {
         comicId = intent.getStringExtra(COMIC_ID)
         doAsync {
             val param = mapOf("id" to comicId)
-            val mData = HttpRequest.getHorrorComicDetail(COMIC_DETAIL, param)
+            val comicDetail = HttpRequest
+                    .url(ComicApi.COMIC_DETAIL)
+                    .params(param)
+                    .convert(ComicDetailBean.ComicDetail::class.java)
+            val  mData = comicDetail.showapi_res_body.item.imgList
             uiThread {
                 mViewPager.adapter = mData?.let { it1 -> BasePagerAdapter(this@ComicDetailActivity, it1) }
             }

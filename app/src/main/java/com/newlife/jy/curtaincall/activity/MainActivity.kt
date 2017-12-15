@@ -9,12 +9,9 @@ import android.view.ViewGroup
 import com.newlife.jy.curtaincall.R
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.contentView
+import java.lang.System.currentTimeMillis
 
-fun showSnackbar(viewGroup: ViewGroup, text: String, duration: Int = 1000) {
-    val snack = Snackbar.make(viewGroup, text, duration)
-    snack.view.setBackgroundColor(ContextCompat.getColor(viewGroup.context, R.color.colorPrimary))
-    snack.show()
-}
 
 class MainActivity : RxAppCompatActivity() {
 
@@ -45,5 +42,24 @@ class MainActivity : RxAppCompatActivity() {
         }
     }
 
+    private var firstTime: Long = 0
+    override fun onBackPressed() {
+        // 两次按返回键退出应用处理
+        val secondTime = currentTimeMillis()
+        // 如果两次按键时间间隔大于2秒，则不退出
+        if (secondTime - firstTime > 2000) {
+            showSnackbar(contentView as ViewGroup, "再按一次退出程序")
+            // 更新firstTime
+            firstTime = secondTime
+        } else {
+            finish()
+        }
+    }
 
+}
+
+fun showSnackbar(viewGroup: ViewGroup, text: String, duration: Int = 1000) {
+    val snack = Snackbar.make(viewGroup, text, duration)
+    snack.view.setBackgroundColor(ContextCompat.getColor(viewGroup.context, R.color.colorPrimary))
+    snack.show()
 }

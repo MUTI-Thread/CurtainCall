@@ -17,7 +17,6 @@ import com.newlife.jy.curtaincall.R
  */
 class BasePagerAdapter(val context: Context, val imgs: List<String>) : PagerAdapter() {
 
-
     override fun isViewFromObject(view: View?, `object`: Any?): Boolean {
         return view == `object`
     }
